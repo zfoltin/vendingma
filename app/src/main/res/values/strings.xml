@@ -1,10 +1,19 @@
 <resources>
     <string name="app_name">Vending Machine</string>
+    <string name="button_add_item">Add item</string>
+    <string name="button_purchase_item">Purchase</string>
+    <string name="error_invalid_amount">Invalid amount</string>
+    <string name="error_out_of_stock">Out of stock, sorry…</string>
     <string name="label_empty_machine">The machine is empty. Use the button below to add stock.</string>
-    <string name="title_activity_add_stock">Add Stock</string>
+    <string name="label_item_info">%1$s for £%2$s</string>
+    <string name="label_purchase">Please provide the amount you pay for this item</string>
+    <string name="label_stock_list">See the vending machine stock below. Select an item to purchase or add stock using the button at the bottom.</string>
+    <string name="label_thank_you">Thanks for your custom!</string>
+    <string name="label_your_change">Your change - £%s</string>
     <string name="prompt_item_name">Item name</string>
     <string name="prompt_item_price">Item price</string>
+    <string name="prompt_money_given">How much you pay?</string>
     <string name="prompt_quantity">Quantity</string>
-    <string name="button_add_item">Add item</string>
-    <string name="label_stock_list">See the vending machine stock below. Select an item to purchase or add stock using the button at the bottom.</string>
+    <string name="title_activity_add_stock">Add Stock</string>
+    <string name="title_activity_purchase">Purchase item</string>
 </resources>

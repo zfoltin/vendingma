@@ -2,10 +2,12 @@ package com.zedeff.vendingma.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.zedeff.vendingma.App;
@@ -25,6 +27,8 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
+    @Bind(R.id.coordinator_layout)
+    View coordinatorLayoutView;
     @Bind(R.id.empty_view)
     View emptyView;
     @Bind(R.id.stock_container)
@@ -44,8 +48,20 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        stockAdapter = new StockAdapter(this, null);
+        stockAdapter = new StockAdapter(this, new ArrayList<Pair<Item, Integer>>());
         stockList.setAdapter(stockAdapter);
+        stockList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Pair<Item, Integer> itemWithQuantity = stockAdapter.getItem(position);
+                if (itemWithQuantity.second > 0) {
+                    Intent intent = PurchaseActivity.getIntent(MainActivity.this, itemWithQuantity.first.getName());
+                    startActivity(intent);
+                } else {
+                    Snackbar.make(coordinatorLayoutView, getString(R.string.error_out_of_stock), Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     @Override

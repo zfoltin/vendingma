@@ -12,6 +12,7 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasKey;
@@ -106,5 +107,26 @@ public class VendingMachineTest {
         assertThat(purchaseResult.isSuccessful(), is(true));
         assertThat(purchaseResult.getFailedReason(), isEmptyOrNullString());
         assertThat(purchaseResult.getAmountToReturn(), is(equalTo(new BigDecimal("0.1").setScale(2, RoundingMode.HALF_UP))));
+    }
+
+    @Test
+    public void getItemForNameFindsItem() {
+        Item item = new Item("Coke", new BigDecimal("1.75"));
+        vendingMachine.addStock(item, 5);
+
+        Item result = vendingMachine.getItemForName(item.getName());
+
+        assertThat(result.getName(), is(equalTo(item.getName())));
+        assertThat(result.getPrice(), is(equalTo(item.getPrice())));
+    }
+
+    @Test
+    public void getItemForNameDoesNotFindNonExistentItem() {
+        Item item = new Item("Coke", new BigDecimal("1.75"));
+        vendingMachine.addStock(item, 5);
+
+        Item result = vendingMachine.getItemForName("Not coke");
+
+        assertThat(result, is(nullValue()));
     }
 }

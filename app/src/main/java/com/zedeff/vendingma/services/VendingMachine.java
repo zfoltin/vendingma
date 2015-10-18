@@ -13,4 +13,6 @@ public interface VendingMachine {
     Map<Item, Integer> getStockLevels();
 
     PurchaseResult purchase(Item item, BigDecimal amount);
+
+    Item getItemForName(String itemName);
 }

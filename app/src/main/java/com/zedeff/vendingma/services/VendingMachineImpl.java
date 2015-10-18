@@ -1,5 +1,7 @@
 package com.zedeff.vendingma.services;
 
+import android.support.annotation.Nullable;
+
 import com.zedeff.vendingma.models.PurchaseResult;
 import com.zedeff.vendingma.models.Item;
 
@@ -37,5 +39,16 @@ public class VendingMachineImpl implements VendingMachine {
         stock.put(item, stock.get(item) - 1);
 
         return new PurchaseResult(true, null, amount.subtract(item.getPrice()).setScale(2, RoundingMode.HALF_UP));
+    }
+
+    @Override
+    @Nullable
+    public Item getItemForName(String itemName) {
+        for (Item i : stock.keySet()) {
+            if (i.getName().equals(itemName)) {
+                return i;
+            }
+        }
+        return null;
     }
 }

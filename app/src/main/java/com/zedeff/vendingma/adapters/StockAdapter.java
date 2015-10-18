@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 public class StockAdapter extends ArrayAdapter<Pair<Item, Integer>> {
 
     private Activity context;
-    private List<Pair<Item, Integer>> stock;
+    private final List<Pair<Item, Integer>> stock;
 
     public StockAdapter(Activity context, List<Pair<Item, Integer>> stock) {
         super(context, -1, stock);
@@ -44,13 +44,9 @@ public class StockAdapter extends ArrayAdapter<Pair<Item, Integer>> {
         return rowView;
     }
 
-    @Override
-    public int getCount() {
-        return stock != null ? stock.size() : 0;
-    }
-
     public void update(List<Pair<Item, Integer>> stock) {
-        this.stock = stock;
+        this.stock.clear();
+        this.stock.addAll(stock);
         notifyDataSetChanged();
     }
 

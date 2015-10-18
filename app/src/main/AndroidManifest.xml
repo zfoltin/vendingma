@@ -21,6 +21,9 @@
         <activity
             android:name=".activities.AddStockActivity"
             android:label="@string/title_activity_add_stock" />
+        <activity
+            android:name=".activities.PurchaseActivity"
+            android:label="@string/title_activity_purchase" />
     </application>
 
 </manifest>
