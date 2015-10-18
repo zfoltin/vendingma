@@ -17,10 +17,23 @@
         android:visibility="gone"
         tools:visibility="visible" />
 
-    <ListView
-        android:id="@+id/stock_list"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:id="@+id/stock_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@null"
-        tools:listitem="@layout/item_stock" />
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/double_spacing"
+            android:text="@string/label_stock_list" />
+
+        <ListView
+            android:id="@+id/stock_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            tools:listitem="@layout/item_stock" />
+    </LinearLayout>
 </RelativeLayout>

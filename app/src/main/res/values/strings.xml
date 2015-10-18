@@ -6,4 +6,5 @@
     <string name="prompt_item_price">Item price</string>
     <string name="prompt_quantity">Quantity</string>
     <string name="button_add_item">Add item</string>
+    <string name="label_stock_list">See the vending machine stock below. Select an item to purchase or add stock using the button at the bottom.</string>
 </resources>

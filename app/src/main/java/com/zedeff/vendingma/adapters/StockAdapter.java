@@ -1,14 +1,15 @@
 package com.zedeff.vendingma.adapters;
 
 import android.app.Activity;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.zedeff.vendingma.models.Item;
 import com.zedeff.vendingma.R;
+import com.zedeff.vendingma.models.Item;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,15 +17,15 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class StockAdapter extends ArrayAdapter<Item> {
+public class StockAdapter extends ArrayAdapter<Pair<Item, Integer>> {
 
     private Activity context;
-    private List<Item> items;
+    private List<Pair<Item, Integer>> stock;
 
-    public StockAdapter(Activity context, List<Item> items) {
-        super(context, -1, items);
+    public StockAdapter(Activity context, List<Pair<Item, Integer>> stock) {
+        super(context, -1, stock);
         this.context = context;
-        this.items = items;
+        this.stock = stock;
     }
 
     @Override
@@ -37,25 +38,39 @@ public class StockAdapter extends ArrayAdapter<Item> {
         }
 
         ViewHolder viewHolder = (ViewHolder) rowView.getTag();
-        viewHolder.update(items.get(position));
+        Pair<Item, Integer> itemWithQuantity = stock.get(position);
+        viewHolder.update(itemWithQuantity.first, itemWithQuantity.second);
 
         return rowView;
+    }
+
+    @Override
+    public int getCount() {
+        return stock != null ? stock.size() : 0;
+    }
+
+    public void update(List<Pair<Item, Integer>> stock) {
+        this.stock = stock;
+        notifyDataSetChanged();
     }
 
     class ViewHolder {
 
         @Bind(R.id.name)
-        TextView name;
+        TextView nameView;
+        @Bind(R.id.quantity)
+        TextView quantityView;
         @Bind(R.id.price)
-        TextView price;
+        TextView priceView;
 
         public ViewHolder(View itemView) {
             ButterKnife.bind(this, itemView);
         }
 
-        public void update(Item item) {
-            name.setText(item.getName());
-            price.setText(String.format("£%s", item.getPrice().setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+        public void update(Item item, int quantity) {
+            nameView.setText(item.getName());
+            quantityView.setText(quantity == 0 ? "Out of stock :(" : String.format("Only %d left", quantity));
+            priceView.setText(String.format("£%s", item.getPrice().setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
         }
     }
 }
