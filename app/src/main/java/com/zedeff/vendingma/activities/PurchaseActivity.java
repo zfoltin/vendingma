@@ -125,7 +125,7 @@ public class PurchaseActivity extends AppCompatActivity {
             }
         });
 
-        builder.create().show();
+        builder.show();
     }
 
     @NonNull

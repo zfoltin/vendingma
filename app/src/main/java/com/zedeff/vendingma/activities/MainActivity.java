@@ -1,14 +1,23 @@
 package com.zedeff.vendingma.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Pair;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.zedeff.vendingma.App;
 import com.zedeff.vendingma.R;
@@ -62,12 +71,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        registerForContextMenu(stockList);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        updateList();
+    }
 
+    private void updateList() {
         boolean isEmpty = App.getVendingMachine().getStockLevels().size() == 0;
         showEmptyView(isEmpty);
 
@@ -99,6 +112,62 @@ public class MainActivity extends AppCompatActivity {
                 return lhs.first.getName().compareToIgnoreCase(rhs.first.getName());
             }
         });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId() == R.id.stock_list) {
+            getMenuInflater().inflate(R.menu.stock_context_menu, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.restock) {
+            askForRestockQuantity(((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position);
+            return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void askForRestockQuantity(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(R.string.label_restock);
+
+        final EditText restockQuantityView = new EditText(this);
+        restockQuantityView.setInputType(InputType.TYPE_CLASS_NUMBER);
+        restockQuantityView.setHint(getString(R.string.label_quantity_to_restock));
+        builder.setView(restockQuantityView);
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int quantity;
+                try {
+                    quantity = Integer.parseInt(restockQuantityView.getText().toString());
+                } catch (NumberFormatException e) {
+                    Toast.makeText(MainActivity.this, getString(R.string.error_invalid_amount), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                Pair<Item, Integer> itemWithQuantity = stockAdapter.getItem(position);
+                App.getVendingMachine().addStock(itemWithQuantity.first, quantity);
+                updateList();
+            }
+        });
+
+        builder.show();
+
+        setRestockQuantityViewMargin(restockQuantityView);
+    }
+
+    private void setRestockQuantityViewMargin(EditText restockQuantityView) {
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        int margin = (int) getResources().getDimension(R.dimen.double_spacing);
+        layoutParams.setMargins(margin, 0, margin, 0);
+        restockQuantityView.setLayoutParams(layoutParams);
     }
 
     @OnClick(R.id.fab)

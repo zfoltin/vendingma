@@ -7,7 +7,9 @@
     <string name="label_empty_machine">The machine is empty. Use the button below to add stock.</string>
     <string name="label_item_info">%1$s for £%2$s</string>
     <string name="label_purchase">Please provide the amount you pay for this item</string>
-    <string name="label_stock_list">See the vending machine stock below. Select an item to purchase or add stock using the button at the bottom.</string>
+    <string name="label_quantity_to_restock">Quantity to restock</string>
+    <string name="label_restock">Restock</string>
+    <string name="label_stock_list">See the vending machine stock below. Select an item to purchase, long press an item to restock or add new stock using the button at the bottom.</string>
     <string name="label_thank_you">Thanks for your custom!</string>
     <string name="label_your_change">Your change - £%s</string>
     <string name="prompt_item_name">Item name</string>
